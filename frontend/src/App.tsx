@@ -19,34 +19,6 @@ function App() {
     <div className="App">
       <AppToolBar />
       <Container maxWidth="md" sx={{ mt: 2 }}>
-        {user && (
-          <Grid container sx={{ mb: 2 }}>
-            <Grid item xs={2}>
-              <Button
-                component={NavLink}
-                variant="contained"
-                size="small"
-                disableElevation
-                style={{ color: 'white' }}
-                to={'/add-photo'}
-              >
-                Add Cocktail
-              </Button>
-            </Grid>
-            <Grid item xs={2}>
-              <Button
-                component={NavLink}
-                variant="contained"
-                size="small"
-                disableElevation
-                style={{ color: 'white' }}
-                to={'/my-photos'}
-              >
-                My photos
-              </Button>
-            </Grid>
-          </Grid>
-        )}
         <Routes>
           <Route path="/" element={<Photos />} />
           <Route
@@ -57,14 +29,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/my-photos"
-            element={
-              <ProtectedRoute isAllowed={user !== null}>
-                <AuthorPhotos />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/author-photos/:id" element={<AuthorPhotos />} />
           <Route path="/photos/:id" element={<OnePhoto />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />

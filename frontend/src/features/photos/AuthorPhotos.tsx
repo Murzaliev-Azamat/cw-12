@@ -5,18 +5,19 @@ import { selectUser } from '../users/usersSlise';
 import { deletePhoto, fetchPhotos } from './photosThunks';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { apiUrl } from '../../constants';
-import { Link } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Link, NavLink, useParams } from 'react-router-dom';
+import { Button, Grid, Typography } from '@mui/material';
 
 const AuthorPhotos = () => {
+  const params = useParams();
   const dispatch = useAppDispatch();
   const photos = useAppSelector(selectPhotos);
   const fetchAllPhotosLoading = useAppSelector(selectFetchAllPhotosLoading);
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
-    dispatch(fetchPhotos(user?._id));
-  }, [dispatch, user?._id]);
+    dispatch(fetchPhotos(params.id));
+  }, [dispatch, params.id]);
 
   const removePhoto = async (id: string) => {
     await dispatch(deletePhoto(id));
@@ -30,6 +31,22 @@ const AuthorPhotos = () => {
   } else {
     info = (
       <>
+        {user && user._id === params.id && (
+          <Grid container sx={{ mb: 2 }}>
+            <Grid item xs={2}>
+              <Button
+                component={NavLink}
+                variant="contained"
+                size="small"
+                disableElevation
+                style={{ color: 'white' }}
+                to={'/add-photo'}
+              >
+                Add new photo
+              </Button>
+            </Grid>
+          </Grid>
+        )}
         {photos.map((photo) => {
           return (
             <div
@@ -37,29 +54,14 @@ const AuthorPhotos = () => {
               style={{ display: 'flex', alignItems: 'center', marginBottom: '15px', position: 'relative' }}
             >
               <img src={apiUrl + '/' + photo.image} style={{ marginRight: '10px', width: '200px' }} alt="image"></img>
-              <Link to={'/photos/' + photo._id} style={{ marginRight: '10px' }}>
-                {photo.name}
-              </Link>
-              {user && user.role === 'admin' && (
+              <Typography sx={{ mr: 1 }}>{photo.name}</Typography>
+              {/*<Link to={'/photos/' + photo._id} style={{ marginRight: '10px' }}>*/}
+              {/*  {photo.name}*/}
+              {/*</Link>*/}
+              {((user && user.role === 'admin') || (user && user._id === photo.user._id)) && (
                 <Button onClick={() => removePhoto(photo._id)} variant="contained" style={{ marginRight: '10px' }}>
                   Delete
                 </Button>
-              )}
-              {user && user.role === 'admin' && (
-                <>
-                  <div
-                    style={{
-                      backgroundColor: 'white',
-                      width: '185px',
-                      height: '25px',
-                      position: 'absolute',
-                      top: '5%',
-                      left: '1%',
-                    }}
-                  >
-                    <p style={{ color: 'red' }}>Неопубликовано</p>
-                  </div>
-                </>
               )}
             </div>
           );

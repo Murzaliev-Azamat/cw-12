@@ -40,8 +40,8 @@ const UserMenu: React.FC<Props> = ({ user }) => {
       </Grid>
       <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem>Profile</MenuItem>
-        <MenuItem component={Link} to={'/tracks_history'}>
-          Track History
+        <MenuItem component={Link} to={'/author-photos/' + user._id}>
+          My photos
         </MenuItem>
         <MenuItem>My account</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>

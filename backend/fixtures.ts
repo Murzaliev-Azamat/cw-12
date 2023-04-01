@@ -16,11 +16,17 @@ const run = async () => {
     console.log("Collections were not present, skipping drop...");
   }
 
-  const [azamat, adilet] = await User.create(
+  const [azamat, victor, adilet] = await User.create(
     {
       username: "Azamat",
       password: "12345",
       displayName: "Aza",
+      token: crypto.randomUUID(),
+    },
+    {
+      username: "Victor",
+      password: "12345",
+      displayName: "Victor",
       token: crypto.randomUUID(),
     },
     {
@@ -52,6 +58,16 @@ const run = async () => {
       user: azamat._id,
       name: "Book",
       image: "fixtures/book.jpeg",
+    },
+    {
+      user: victor._id,
+      name: "Notebook",
+      image: "fixtures/notebook.jpeg",
+    },
+    {
+      user: victor._id,
+      name: "Phone",
+      image: "fixtures/phone.jpeg",
     }
   );
 

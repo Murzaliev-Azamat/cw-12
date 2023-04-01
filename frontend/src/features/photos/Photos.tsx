@@ -33,21 +33,15 @@ const Photos = () => {
     info = (
       <>
         {photos.map((photo) => {
-          if (user && user.role !== 'admin') {
-            return;
-          }
           return (
             <div
               key={photo._id}
               style={{ display: 'flex', alignItems: 'center', marginBottom: '15px', position: 'relative' }}
             >
               <img src={apiUrl + '/' + photo.image} style={{ marginRight: '10px', width: '200px' }} alt="image"></img>
-              <Link to={'/photos/' + photo._id} style={{ marginRight: '10px' }}>
-                {photo.name}
-              </Link>
               <Typography>
-                By:{' '}
-                <Link to={'/photos/' + photo._id} style={{ marginRight: '10px' }}>
+                {photo.name + ' By: '}
+                <Link to={'/author-photos/' + photo.user._id} style={{ marginRight: '10px' }}>
                   {photo.user.displayName}
                 </Link>
               </Typography>
@@ -55,22 +49,6 @@ const Photos = () => {
                 <Button onClick={() => removePhoto(photo._id)} variant="contained" style={{ marginRight: '10px' }}>
                   Delete
                 </Button>
-              )}
-              {user && user.role === 'admin' && (
-                <>
-                  <div
-                    style={{
-                      backgroundColor: 'white',
-                      width: '185px',
-                      height: '25px',
-                      position: 'absolute',
-                      top: '5%',
-                      left: '1%',
-                    }}
-                  >
-                    <p style={{ color: 'red' }}>Неопубликовано</p>
-                  </div>
-                </>
               )}
             </div>
           );

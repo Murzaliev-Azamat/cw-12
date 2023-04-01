@@ -1,6 +1,7 @@
 export interface Photo {
   _id: string;
   user: {
+    _id: string;
     displayName: string;
   };
   name: string;

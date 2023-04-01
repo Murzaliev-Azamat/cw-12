@@ -59,16 +59,24 @@ photosRouter.post(
   }
 );
 
-photosRouter.delete("/:id", auth, permit("admin"), async (req, res, next) => {
-  try {
-    const photo = await Photo.findOne({ _id: req.params.id });
-    if (photo) {
-      await Photo.deleteOne({ _id: photo._id });
-      return res.send("Photo deleted");
+photosRouter.delete(
+  "/:id",
+  auth,
+  permit("admin", "user"),
+  async (req, res, next) => {
+    const user = (req as RequestWithUser).user;
+    try {
+      const photo = await Photo.findOne({ _id: req.params.id });
+      if (photo) {
+        if (user.role === "admin" || user._id === photo.user._id) {
+          await Photo.deleteOne({ _id: photo._id });
+          return res.send("Photo deleted");
+        }
+      }
+    } catch (e) {
+      return next(e);
     }
-  } catch (e) {
-    return next(e);
   }
-});
+);
 
 export default photosRouter;
