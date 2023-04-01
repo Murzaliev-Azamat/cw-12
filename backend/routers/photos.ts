@@ -68,9 +68,14 @@ photosRouter.delete(
     try {
       const photo = await Photo.findOne({ _id: req.params.id });
       if (photo) {
-        if (user.role === "admin" || user._id === photo.user._id) {
+        if (
+          user.role === "admin" ||
+          photo.user.toString() === user._id.toString()
+        ) {
           await Photo.deleteOne({ _id: photo._id });
           return res.send("Photo deleted");
+        } else {
+          return res.status(403).send("Вы не можете удалить чужое фото!");
         }
       }
     } catch (e) {
