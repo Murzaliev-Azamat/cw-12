@@ -5,10 +5,14 @@ import FileInput from '../../components/UI/FileInput/FileInput';
 import { PhotoApi } from '../../../types';
 import { addPhoto, fetchPhotos } from './photosThunks';
 import { selectAddPhotoLoading } from './photosSlice';
+import { useNavigate } from 'react-router-dom';
+import { selectUser } from '../users/usersSlise';
 
 const FormForPhotos = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const addPhotoLoading = useAppSelector(selectAddPhotoLoading);
+  const user = useAppSelector(selectUser);
 
   const [state, setState] = useState<PhotoApi>({
     name: '',
@@ -25,6 +29,7 @@ const FormForPhotos = () => {
     );
     setState({ name: '', image: null });
     await dispatch(fetchPhotos());
+    navigate('/author-photos/' + user?._id);
   };
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +57,7 @@ const FormForPhotos = () => {
 
   let disabled = false;
 
-  if (addPhotoLoading) {
+  if (addPhotoLoading || state.image === null) {
     disabled = true;
   }
 

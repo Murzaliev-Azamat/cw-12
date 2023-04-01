@@ -56,7 +56,6 @@ export const PhotosSlice = createSlice({
 
 export const photosReducer = PhotosSlice.reducer;
 export const selectPhotos = (state: RootState) => state.photos.photos;
-export const selectPhoto = (state: RootState) => state.photos.photo;
 
 export const selectFetchAllPhotosLoading = (state: RootState) => state.photos.fetchAllPhotosLoading;
 export const selectAddPhotoLoading = (state: RootState) => state.photos.addPhotoLoading;

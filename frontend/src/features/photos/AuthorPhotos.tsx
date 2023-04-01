@@ -26,7 +26,7 @@ const AuthorPhotos = () => {
 
   const removePhoto = async (id: string) => {
     await dispatch(deletePhoto(id));
-    await dispatch(fetchPhotos());
+    await dispatch(fetchPhotos(params.id));
   };
 
   let info = null;
