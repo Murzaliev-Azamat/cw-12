@@ -1,14 +1,7 @@
-export interface Ingredient {
-  name: string;
-  amount: string;
-}
-
-export interface CocktailMutation {
+export interface PhotoMutation {
   user: string;
   name: string;
-  recipe: string;
   image: string | null;
-  ingredients: Ingredient[];
 }
 
 export interface IUser {

@@ -1,28 +1,15 @@
-export interface Cocktail {
+export interface Photo {
   _id: string;
+  user: {
+    displayName: string;
+  };
   name: string;
   image: string;
-  recipe: string;
-  ingredients: IngredientPayload[];
-  isPublished: boolean;
 }
 
-export interface IngredientPayload {
-  _id: string;
-  name: string;
-  amount: string;
-}
-
-export interface Ingredient {
-  name: string;
-  amount: string;
-}
-
-export interface CocktailApi {
+export interface PhotoApi {
   name: string;
   image: File | null;
-  recipe: string;
-  ingredients: Ingredient[];
 }
 
 export interface RegisterMutation {

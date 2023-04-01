@@ -2,7 +2,7 @@ import crypto from "crypto";
 import mongoose from "mongoose";
 import config from "./config";
 import User from "./models/User";
-import Cocktail from "./models/Cocktail";
+import Photo from "./models/Photo";
 
 const run = async () => {
   mongoose.set("strictQuery", false);
@@ -10,7 +10,7 @@ const run = async () => {
   const db = mongoose.connection;
 
   try {
-    await db.dropCollection("cocktails");
+    await db.dropCollection("photos");
     await db.dropCollection("users");
   } catch (e) {
     console.log("Collections were not present, skipping drop...");
@@ -32,38 +32,26 @@ const run = async () => {
     }
   );
 
-  await Cocktail.create(
+  await Photo.create(
     {
       user: adilet._id,
-      name: "Long Island",
-      image: "fixtures/long.jpeg",
-      recipe: "about recipe",
-      ingredients: [
-        {
-          name: "white rum",
-          amount: "10ml",
-        },
-        {
-          name: "tequila",
-          amount: "50ml",
-        },
-      ],
+      name: "House",
+      image: "fixtures/house.jpeg",
+    },
+    {
+      user: adilet._id,
+      name: "Tree",
+      image: "fixtures/tree.jpeg",
     },
     {
       user: azamat._id,
-      name: "Mary",
-      image: "fixtures/mary.jpeg",
-      recipe: "about recipe",
-      ingredients: [
-        {
-          name: "water",
-          amount: "1 bottle",
-        },
-        {
-          name: "yellow lemon",
-          amount: "2 slice",
-        },
-      ],
+      name: "Car",
+      image: "fixtures/car.jpeg",
+    },
+    {
+      user: azamat._id,
+      name: "Book",
+      image: "fixtures/book.jpeg",
     }
   );
 

@@ -3,16 +3,16 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist/es/constants';
 import { usersReducer } from '../features/users/usersSlise';
-import { cocktailsReducer } from '../features/cocktails/cocktailsSlice';
+import { photosReducer } from '../features/photos/photosSlice';
 
 const usersPersistConfig = {
-  key: 'shop:users',
+  key: 'photoApp:users',
   storage,
   whitelist: ['user'],
 };
 
 const rootReducer = combineReducers({
-  cocktails: cocktailsReducer,
+  photos: photosReducer,
   users: persistReducer(usersPersistConfig, usersReducer),
 });
 

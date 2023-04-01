@@ -1,16 +1,16 @@
 import React from 'react';
 import { Button, Container, Grid } from '@mui/material';
 import { NavLink, Route, Routes } from 'react-router-dom';
-import Cocktails from './features/cocktails/Cocktails';
+import Photos from './features/photos/Photos';
 import AppToolBar from './components/UI/AppToolBar/AppToolBar';
 import Register from './features/users/Register';
 import Login from './features/users/Login';
 import { useAppSelector } from './app/hooks';
 import { selectUser } from './features/users/usersSlise';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import FormForCocktails from './features/cocktails/FormForCocktails';
-import OneCocktail from './features/cocktails/OneCocktail';
-import MyCocktails from './features/cocktails/MyCocktails';
+import FormForPhotos from './features/photos/FormForPhotos';
+import OnePhoto from './features/photos/OnePhoto';
+import AuthorPhotos from './features/photos/AuthorPhotos';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -28,7 +28,7 @@ function App() {
                 size="small"
                 disableElevation
                 style={{ color: 'white' }}
-                to={'/add-cocktail'}
+                to={'/add-photo'}
               >
                 Add Cocktail
               </Button>
@@ -40,32 +40,32 @@ function App() {
                 size="small"
                 disableElevation
                 style={{ color: 'white' }}
-                to={'/my-cocktails'}
+                to={'/my-photos'}
               >
-                My cocktails
+                My photos
               </Button>
             </Grid>
           </Grid>
         )}
         <Routes>
-          <Route path="/" element={<Cocktails />} />
+          <Route path="/" element={<Photos />} />
           <Route
-            path="/add-cocktail"
+            path="/add-photo"
             element={
               <ProtectedRoute isAllowed={(user && user.role === 'admin') || (user && user.role === 'user')}>
-                <FormForCocktails />
+                <FormForPhotos />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/my-cocktails"
+            path="/my-photos"
             element={
               <ProtectedRoute isAllowed={user !== null}>
-                <MyCocktails />
+                <AuthorPhotos />
               </ProtectedRoute>
             }
           />
-          <Route path="/cocktails/:id" element={<OneCocktail />} />
+          <Route path="/photos/:id" element={<OnePhoto />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<span>Такой страницы не существует</span>} />
