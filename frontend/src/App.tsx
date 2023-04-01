@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Container, Grid } from '@mui/material';
-import { NavLink, Route, Routes } from 'react-router-dom';
+import { Container } from '@mui/material';
+import { Route, Routes } from 'react-router-dom';
 import Photos from './features/photos/Photos';
 import AppToolBar from './components/UI/AppToolBar/AppToolBar';
 import Register from './features/users/Register';
@@ -9,7 +9,6 @@ import { useAppSelector } from './app/hooks';
 import { selectUser } from './features/users/usersSlise';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import FormForPhotos from './features/photos/FormForPhotos';
-import OnePhoto from './features/photos/OnePhoto';
 import AuthorPhotos from './features/photos/AuthorPhotos';
 
 function App() {
@@ -30,7 +29,6 @@ function App() {
             }
           />
           <Route path="/author-photos/:id" element={<AuthorPhotos />} />
-          <Route path="/photos/:id" element={<OnePhoto />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<span>Такой страницы не существует</span>} />

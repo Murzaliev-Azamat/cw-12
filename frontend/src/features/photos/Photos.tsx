@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { deletePhoto, fetchPhotos } from './photosThunks';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectFetchAllPhotosLoading, selectPhotos } from './photosSlice';
@@ -7,12 +7,17 @@ import { apiUrl } from '../../constants';
 import { Link } from 'react-router-dom';
 import { Button, Typography } from '@mui/material';
 import { selectUser } from '../users/usersSlise';
+import AlertDialog from '../../components/UI/Dialog/Dialog';
 
 const Photos = () => {
   const dispatch = useAppDispatch();
   const photos = useAppSelector(selectPhotos);
   const fetchAllPhotosLoading = useAppSelector(selectFetchAllPhotosLoading);
   const user = useAppSelector(selectUser);
+  const [showAlertDialog, setShowAlertDialog] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState('');
+
+  const cancelAlertDialog = () => setShowAlertDialog(false);
 
   useEffect(() => {
     dispatch(fetchPhotos());
@@ -23,8 +28,6 @@ const Photos = () => {
     await dispatch(fetchPhotos());
   };
 
-  console.log(photos);
-
   let info = null;
 
   if (fetchAllPhotosLoading) {
@@ -32,13 +35,24 @@ const Photos = () => {
   } else {
     info = (
       <>
+        <AlertDialog show={showAlertDialog} onClose={cancelAlertDialog}>
+          <img src={apiUrl + '/' + selectedPhoto} style={{ width: '100%' }} alt="image"></img>
+        </AlertDialog>
         {photos.map((photo) => {
           return (
             <div
               key={photo._id}
               style={{ display: 'flex', alignItems: 'center', marginBottom: '15px', position: 'relative' }}
             >
-              <img src={apiUrl + '/' + photo.image} style={{ marginRight: '10px', width: '200px' }} alt="image"></img>
+              <img
+                onClick={() => {
+                  setSelectedPhoto(photo.image);
+                  setShowAlertDialog(true);
+                }}
+                src={apiUrl + '/' + photo.image}
+                style={{ marginRight: '10px', width: '200px' }}
+                alt="image"
+              ></img>
               <Typography>
                 {photo.name + ' By: '}
                 <Link to={'/author-photos/' + photo.user._id} style={{ marginRight: '10px' }}>

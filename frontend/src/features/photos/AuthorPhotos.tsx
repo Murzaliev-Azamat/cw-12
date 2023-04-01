@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectFetchAllPhotosLoading, selectPhotos } from './photosSlice';
 import { selectUser } from '../users/usersSlise';
 import { deletePhoto, fetchPhotos } from './photosThunks';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { apiUrl } from '../../constants';
-import { Link, NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { Button, Grid, Typography } from '@mui/material';
+import AlertDialog from '../../components/UI/Dialog/Dialog';
 
 const AuthorPhotos = () => {
   const params = useParams();
@@ -14,6 +15,10 @@ const AuthorPhotos = () => {
   const photos = useAppSelector(selectPhotos);
   const fetchAllPhotosLoading = useAppSelector(selectFetchAllPhotosLoading);
   const user = useAppSelector(selectUser);
+  const [showAlertDialog, setShowAlertDialog] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState('');
+
+  const cancelAlertDialog = () => setShowAlertDialog(false);
 
   useEffect(() => {
     dispatch(fetchPhotos(params.id));
@@ -31,6 +36,9 @@ const AuthorPhotos = () => {
   } else {
     info = (
       <>
+        <AlertDialog show={showAlertDialog} onClose={cancelAlertDialog}>
+          <img src={apiUrl + '/' + selectedPhoto} style={{ width: '100%' }} alt="image"></img>
+        </AlertDialog>
         {user && user._id === params.id && (
           <Grid container sx={{ mb: 2 }}>
             <Grid item xs={2}>
@@ -53,11 +61,16 @@ const AuthorPhotos = () => {
               key={photo._id}
               style={{ display: 'flex', alignItems: 'center', marginBottom: '15px', position: 'relative' }}
             >
-              <img src={apiUrl + '/' + photo.image} style={{ marginRight: '10px', width: '200px' }} alt="image"></img>
+              <img
+                onClick={() => {
+                  setSelectedPhoto(photo.image);
+                  setShowAlertDialog(true);
+                }}
+                src={apiUrl + '/' + photo.image}
+                style={{ marginRight: '10px', width: '200px' }}
+                alt="image"
+              ></img>
               <Typography sx={{ mr: 1 }}>{photo.name}</Typography>
-              {/*<Link to={'/photos/' + photo._id} style={{ marginRight: '10px' }}>*/}
-              {/*  {photo.name}*/}
-              {/*</Link>*/}
               {((user && user.role === 'admin') || (user && user._id === photo.user._id)) && (
                 <Button onClick={() => removePhoto(photo._id)} variant="contained" style={{ marginRight: '10px' }}>
                   Delete
